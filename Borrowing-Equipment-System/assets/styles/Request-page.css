@@ -1,0 +1,105 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family:  Playfair Display;
+    flex-wrap: wrap;
+}
+
+ img {
+    height: 70px;
+    width: 80px;
+    border-radius: 24px;
+    
+}
+
+header {
+    background-color: #f72004e7;
+    height: 80px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:  20px;
+}
+
+header h2 {
+    color: white;
+    font-size: 30px;
+    font-family: Playfair Display;
+    margin: 0;
+}
+
+nav {
+    height: 45px;
+    background-color: #cc0000da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    color: white;
+    font-family: Playfair Display;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.flex{
+    display: flex;
+   
+}
+
+.container {
+    width: 900px;
+    margin: 40px auto;
+    background: #f5f5f0; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow:0 4px 10px #f72004e7;
+    color: #333; 
+    display: flex;
+    flex-wrap: wrap;  
+}
+
+.Botn {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button.primary {
+    width: 30%;
+    padding: 10px;
+    background:  #990000;
+    color:white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button.primary:hover {
+    opacity: 0.85;
+}

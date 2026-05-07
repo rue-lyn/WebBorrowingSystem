@@ -1,0 +1,150 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Playfair Display;
+}
+
+body {
+    background:#f5f5f0;
+    color:#333;
+}
+
+
+ img {
+    height: 70px;
+    width: 80px;
+    border-radius: 24px;
+    
+}
+
+header {
+    background-color: #f72004e7;
+    height: 80px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:  20px;
+}
+
+header h2 {
+    color: white;
+    font-size: 30px;
+    font-family: Playfair Display;
+    margin: 0;
+}
+
+nav {
+    height: 45px;
+    background-color: #cc0000da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 15px;
+    color: white;
+    font-family: Playfair Display;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.container {
+    padding:30px 40px;
+}
+
+h3 {
+    margin-bottom:15px;
+    color:#1a1a1a;
+}
+
+.cards {
+    display:flex;
+    gap:25px;
+    margin-bottom:35px;
+}
+
+.card {
+    flex:1;
+    background:#f5f5f0;
+    border:2px solid #990000;
+    padding:25px;
+    border-radius:8px;
+    text-align:center;
+}
+
+.card h4 {
+    color:#333;
+    margin-bottom:10px;
+}
+
+.card p {
+    font-size:28px;
+    font-weight:bold;
+    color:#1a1a1a;
+}
+
+.table-box {
+    border:2px solid #990000;
+    border-radius:8px;
+    overflow:hidden;
+    background:#f5f5f0;
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead {
+    background:#cc0000da;
+    color:white;
+}
+
+th, td {
+    padding:12px 15px;
+    text-align:left;
+}
+
+tbody tr {
+    border-bottom:1px solid white;
+}
+
+.status {
+    padding:5px 10px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.returned {
+    background:#990000;
+    color:white;
+    padding: 10px 5px;
+}
+
+.borrowed {
+    background:#333;
+    color:#f5f5f0;
+    padding: 10px 5px;
+
+}
+
+.overdue {
+    background:#f00e0ee1;
+    color:#ffffff;
+    padding: 10px 5px;
+}

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+<title>Equipment Borrowing System</title>
+<link rel="stylesheet" href="/assets/styles/admin.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Borrowing — Admin Panel</title>
+  <link rel="stylesheet" href="/assets/styles/admin.css" />
+  <script src="/assets/js/admin.js"></script>
+</head>
+
+
+<body>
+
+<body class="login-body">
+<div id="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="logo-icon"></span>
+      <h1>System Borrowing</h1>
+      <p>Admin Portal</p>
+    </div>
+    <div class="login-form">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="login-user" placeholder="admin" autocomplete="username"/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <div id="login-error" class="login-error" style="display:none">Invalid credentials. Please try again.</div>
+      <button class="btn-login" onclick="doLogin()">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon-sm"></span>
+      <h2>SysBorrow</h2>
+      <small>Equipment Admin</small>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showPage('dashboard', this)">
+        <span class="nav-icon"></span> Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage('equipment', this)">
+        <span class="nav-icon"></span> Equipment
+      </div>
+      <div class="nav-item" onclick="showPage('borrows', this)">
+        <span class="nav-icon"></span> Borrow Requests
+      </div>
+      <div class="nav-item" onclick="showPage('violations', this)">
+        <span class="nav-icon"></span> Violations
+        <span id="vio-badge" class="sidebar-badge">0</span>
+      </div>
+      <div class="nav-item" onclick="showPage('analytics', this)">
+        <span class="nav-icon"></span> Analytics
+      </div>
+      <div class="nav-item" onclick="showPage('settings', this)">
+        <span class="nav-icon"></span> Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="logged-in-user">
+        <div class="user-avatar" id="user-avatar-letter">A</div>
+        <div>
+          <div id="sidebar-username" class="user-name">Admin</div>
+          <div class="user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span id="page-title" class="page-title">Dashboard</span>
+        <span id="current-date" class="current-date"></span>
+      </div>
+      <div class="top-bar-right">
+        <button class="btn-topbar" onclick="runViolationCheck()">⚠ Check Overdues</button>
+        <button class="btn-topbar danger" onclick="doLogout()">↩ Logout</button>
+      </div>
+    </div>
+
+    <div class="content-inner">
+
+      <div id="page-dashboard" class="page active">
+        <h3 class="section-title">Overview</h3>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total Equipment</div>
+            <div class="stat-val gold" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Currently Borrowed</div>
+            <div class="stat-val" id="stat-borrowed">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Overdue / Violations</div>
+            <div class="stat-val red" id="stat-overdue">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Available Now</div>
+            <div class="stat-val green" id="stat-available">0</div>
+          </div>
+        </div>
+
+        <div id="overdue-warn-container"></div>
+
+        <div class="card-box">
+          <div class="card-box-header">
+            <h4>Recent Borrow Activity</h4>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Teacher</th><th>Equipment</th><th>Borrowed</th><th>Due Date</th><th>Status</th></tr>
+            </thead>
+            <tbody id="recent-activity-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="page-equipment" class="page">
+        <div class="page-header">
+          <h3 class="section-title">Sports Equipment Inventory</h3>
+          <button class="btn-primary" onclick="openModal('add-equipment-modal')">+ Add Equipment</button>
+        </div>
+        <div class="card-box">
+          <input type="text" id="eq-search" class="search-input" placeholder=" Search equipment..." oninput="renderEquipmentTable()" />
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Category</th><th>Qty Total</th><th>Available</th><th>Condition</th><th>Notes</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="equipment-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="page-borrows" class="page">
+        <div class="page-header">
+          <h3 class="section-title">Borrow Requests</h3>
+          <button class="btn-primary" onclick="openModal('add-borrow-modal')">+ New Request</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active" onclick="switchBorrowTab('pending', this)">Pending</button>
+          <button class="tab" onclick="switchBorrowTab('approved', this)">Approved / Active</button>
+          <button class="tab" onclick="switchBorrowTab('returned', this)">Returned</button>
+        </div>
+        <div class="card-box" style="margin-top:0; border-top-left-radius:0; border-top-right-radius:0;">
+          <table>
+            <thead>
+              <tr><th>Teacher</th><th>Equipment</th><th>Qty</th><th>Purpose</th><th>Borrow Date</th><th>Due Date</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="borrow-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="page-violations" class="page">
+        <div class="page-header">
+          <h3 class="section-title">Violations &amp; Overdues</h3>
+          <button class="btn-primary" onclick="openModal('add-violation-modal')">+ Add Violation</button>
+        </div>
+        <div class="card-box">
+          <table>
+            <thead>
+              <tr><th>Teacher</th><th>Equipment</th><th>Due Date</th><th>Days Overdue</th><th>Penalty</th><th>Remarks</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="violations-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="page-analytics" class="page">
+        <h3 class="section-title">Analytics</h3>
+
+        <div class="analytics-filter-row">
+          <button class="tab active" onclick="setAnalyticsFilter('all', this)">All Time</button>
+          <button class="tab" onclick="setAnalyticsFilter('30', this)">Last 30 Days</button>
+          <button class="tab" onclick="setAnalyticsFilter('7', this)">Last 7 Days</button>
+        </div>
+
+<div class="login-card">
+<h1>Equipment Borrowing System</h1>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total Borrows</div>
+            <div class="stat-val gold" id="a-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Now</div>
+            <div class="stat-val green" id="a-active">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Most Borrowed</div>
+            <div class="stat-val" id="a-top" style="font-size:18px; padding-top:8px">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. Borrow Days</div>
+            <div class="stat-val" id="a-avg">0</div>
+          </div>
+        </div>
+
+<input id="username" placeholder="Admin Username">
+<input id="password" type="password" placeholder="Password">
+        <div class="analytics-grid">
+          <div class="card-box analytics-card-full">
+            <div class="card-box-header">
+              <h4>Borrow Frequency by Equipment</h4>
+              <span class="badge badge-gold">Top items</span>
+            </div>
+            <div style="position:relative; height:240px;">
+              <canvas id="freqChart" role="img" aria-label="Bar chart showing borrow frequency per equipment">No data yet.</canvas>
+            </div>
+            <div id="freq-legend" class="chart-legend"></div>
+          </div>
+
+<button onclick="login()">Login</button>
+          <div class="card-box">
+            <div class="card-box-header"><h4>Active Borrows Now</h4></div>
+            <div style="position:relative; height:240px;">
+              <canvas id="activeChart" role="img" aria-label="Doughnut chart of active borrows">No data yet.</canvas>
+            </div>
+            <div id="active-legend" class="chart-legend"></div>
+          </div>
+
+          <div class="card-box">
+            <div class="card-box-header"><h4>Borrows by Category</h4></div>
+            <div style="position:relative; height:240px;">
+              <canvas id="catChart" role="img" aria-label="Horizontal bar chart of borrows by category">No data yet.</canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="page-settings" class="page">
+        <h3 class="section-title">Settings</h3>
+        <div class="settings-grid">
+
+          <div class="card-box settings-card">
+            <h4>Change Credentials</h4>
+            <div class="form-group">
+              <label>New Username</label>
+              <input type="text" id="new-username" placeholder="Enter new username"/>
+            </div>
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="curr-pass" placeholder="Current password"/>
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="new-pass" placeholder="New password"/>
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="confirm-pass" placeholder="Confirm new password"/>
+            </div>
+            <div id="settings-msg" class="settings-msg" style="display:none"></div>
+            <button class="btn-primary" onclick="saveCredentials()">Save Changes</button>
+          </div>
+
+          <div class="card-box settings-card">
+            <h4>Violation Rules</h4>
+            <div class="form-group">
+              <label>Penalty per overdue day (₱)</label>
+              <input type="number" id="penalty-per-day" value="50" min="0"/>
+            </div>
+            <div class="form-group">
+              <label>Grace Period (days before a violation is created)</label>
+              <input type="number" id="grace-period" value="1" min="0"/>
+            </div>
+            <button class="btn-primary" onclick="saveViolationRules()">Save Rules</button>
+          </div>
+
+          <div class="card-box settings-card">
+            <h4>Session</h4>
+            <p style="color:var(--muted); font-size:14px; margin-bottom:16px;">
+              Logged in as <strong id="settings-username">admin</strong>
+            </p>
+            <button class="btn-danger" onclick="doLogout()">Logout Now</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="add-equipment-modal" class="modal-overlay" onclick="closeModalOutside(event,'add-equipment-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Sports Equipment</h3>
+      <button onclick="closeModal('add-equipment-modal')" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Equipment Name</label>
+        <input type="text" id="eq-name" placeholder="e.g. Basketball"/>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="eq-category">
+          <option>Ball Sports</option>
+          <option>Racket Sports</option>
+          <option>Athletics</option>
+          <option>Aquatics</option>
+          <option>Combat Sports</option>
+          <option>Fitness</option>
+          <option>Team Sports</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" id="eq-qty" value="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Condition</label>
+          <select id="eq-condition">
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Fair</option>
+            <option>Poor</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description / Notes</label>
+        <textarea id="eq-notes" rows="2" placeholder="Optional notes..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('add-equipment-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addEquipment()">Add Equipment</button>
+    </div>
+  </div>
+</div>
+
+<div id="add-borrow-modal" class="modal-overlay" onclick="closeModalOutside(event,'add-borrow-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Borrow Request</h3>
+      <button onclick="closeModal('add-borrow-modal')" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Teacher Name</label>
+        <input type="text" id="br-teacher" placeholder="e.g. Mr. Santos"/>
+      </div>
+      <div class="form-group">
+        <label>Equipment</label>
+        <select id="br-equipment"></select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" id="br-qty" value="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Purpose</label>
+          <input type="text" id="br-purpose" placeholder="e.g. PE Class, Tournament"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Borrow Date</label>
+          <input type="date" id="br-date"/>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="br-due"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('add-borrow-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addBorrowRequest()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<div id="add-violation-modal" class="modal-overlay" onclick="closeModalOutside(event,'add-violation-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Manual Violation</h3>
+      <button onclick="closeModal('add-violation-modal')" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Teacher Name</label>
+        <input type="text" id="vio-teacher" placeholder="e.g. Ms. Cruz"/>
+      </div>
+      <div class="form-group">
+        <label>Equipment</label>
+        <input type="text" id="vio-equipment" placeholder="e.g. Volleyball Net"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="vio-due"/>
+        </div>
+        <div class="form-group">
+          <label>Penalty (₱)</label>
+          <input type="number" id="vio-penalty" value="50" min="0"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Remarks</label>
+        <textarea id="vio-remarks" rows="2" placeholder="Reason or notes..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('add-violation-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addViolation()">Add Violation</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<div id="toast" class="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

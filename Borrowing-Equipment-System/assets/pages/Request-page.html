@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Equipment Borrowing System</title>
+<link rel="stylesheet" href="/assets/styles/Request-page.css">
+</head>
+<body>
+
+<header>
+    <img src="/assets/images/Screenshot 2026-03-05 142802.png" alt="">
+    <h1><a href="Equipment-page.html">BORROW EQUIPMENT</a></h1>
+    <h2><a href="/index.html">SportsEQ</a></h2>
+</header>
+
+<nav class="Nav">
+    <div>
+        <a href="/index.html">HOME</a>
+        <a href="Dashboard-page.html">DASHBOARD</a>
+        <a href="Account-page.html"> ACCOUNT</a>
+    </div>
+</nav>
+        
+        
+<div class="container">
+    <!-- REQUEST -->
+     <label>Select Item</label>
+            <select>
+                <option>Kd Shoe</option>
+                <option>Goggles</option>
+                <option>Rocket</option>
+                <option>Tennis ball</option>
+                <option>Soccer ball</option>
+                <option>Rocket</option>
+                <option>Volley ball</option>
+                <option>Paddle</option>
+                <option>Net</option>
+            </select>
+
+            <label >Date Borrowed</label>
+            <input type="date">
+
+            <label>Returned Date</label>
+            <input type="date">
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="99" value="1">
+
+            <label>Purpose</label>
+            <input type="text" placeholder="Enter purpose">
+    <div class="Botn">
+            <button class="Botn primary">Submit Request</button>
+    </div>
+
+</div>
+
+
+</body>
+</html>     

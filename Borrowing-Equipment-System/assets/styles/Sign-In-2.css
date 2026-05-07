@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Playfair Display;
+}
+
+/* HEADER */
+header {
+    background-color: #f72004e7;
+    height: 80px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    color: white;
+    font-size: 26px;
+}
+
+header img {
+    height: 60px;
+    border-radius: 12px;
+}
+
+/* NAV */
+nav {
+    height: 45px;
+    background-color: #cc0000da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* MAIN */
+main {
+    min-height: 100vh;
+    background: url('../images/main-pic/background.png') no-repeat center center/cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+/* CONTAINER */
+.contain {
+    width: 90%;
+    max-width: 1000px;
+
+    background: #f5f5f0;
+    padding: 50px;
+    border-radius: 18px;
+
+    box-shadow: 0 6px 20px rgba(247, 32, 4, 0.4);
+}
+
+/* FORM */
+.form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.form input,
+.form select {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON */
+.form button {
+    width: 100%;
+    padding: 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #f72004e7;
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.form button:hover {
+    background: #cc0000;
+}
+
+/* LINKS */
+.switch {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.switch a {
+    color: #cc0000;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .contain {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contain {
+        padding: 20px;
+    }
+}
